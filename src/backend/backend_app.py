@@ -23,7 +23,7 @@ def get_posts():
             "content": data.get('content')
         }
         if not new_post['title'] or not new_post['content']:
-            return jsonify({'error': f'Missing fields: {[key for key, value in new_post.items() if not value]}'})
+            return {'error': f'Missing fields: {[key for key, value in new_post.items() if not value]}'}, 400
         POSTS.append(new_post)
         return jsonify(new_post), 201
     return jsonify(POSTS)
