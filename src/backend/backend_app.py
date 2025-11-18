@@ -9,6 +9,7 @@ POSTS = [
     {"id": 2, "title": "Second post", "content": "This is the second post."},
 ]
 
+
 def unique_id():
     return max(post['id'] for post in POSTS) + 1
 
@@ -27,6 +28,35 @@ def get_posts():
         POSTS.append(new_post)
         return jsonify(new_post), 201
     return jsonify(POSTS)
+
+
+@app.route('/api/posts/<int:post_id>', methods=['DELETE', 'PUT'])
+def handle_post(post_id):
+    global POSTS
+    if request.method == 'DELETE':
+        post_count = len(POSTS)
+        POSTS = [post for post in POSTS if post['id'] != post_id]
+        if len(POSTS) == post_count:
+            return {'error': f'Post with id <{post_id}> not found.'}, 404
+        return {'message': f'Post with id <{post_id}> has been deleted successfully.'}, 200
+
+    elif request.method == 'PUT':
+        data = request.get_json()
+        for i, post in enumerate(POSTS):
+            if post['id'] == post_id:
+                for key in post:
+                    POSTS[i][key] = data.get(key) if data.get(key) else post[key]
+                return jsonify(POSTS[i]), 200
+        return {'error': f'Post with id <{post_id}> not found.'}, 404
+
+@app.route('/api/posts/search', methods=['GET'])
+def search_posts():
+    title = request.args.get('title')
+    content = request.args.get('content')
+    search_result = [
+        post for post in POSTS if title.lower() in post['title'].lower() and content.lower() in post['content'].lower()
+    ]
+    return jsonify(search_result), 200
 
 
 if __name__ == '__main__':
