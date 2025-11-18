@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -9,9 +9,21 @@ POSTS = [
     {"id": 2, "title": "Second post", "content": "This is the second post."},
 ]
 
+def unique_id():
+    return max(post['id'] for post in POSTS) + 1
 
-@app.route('/api/posts', methods=['GET'])
+
+@app.route('/api/posts', methods=['GET', 'POST'])
 def get_posts():
+    if request.method == 'POST':
+        data = request.get_json()
+        new_post = {
+            "id": unique_id(),
+            "title": data['title'],
+            "content": data['content']
+        }
+        POSTS.append(new_post)
+        return jsonify(new_post), 201
     return jsonify(POSTS)
 
 
