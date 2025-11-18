@@ -19,10 +19,11 @@ def get_posts():
         data = request.get_json()
         new_post = {
             "id": unique_id(),
-            "title": data['title'],
-            "content": data['content']
+            "title": data.get('title'),
+            "content": data.get('content')
         }
-        POSTS.append(new_post)
+        if not new_post['title'] or not new_post['content']:
+            return jsonify({'error': f'Missing fields: {[key for key, value in new_post.items() if not value]}'})
         return jsonify(new_post), 201
     return jsonify(POSTS)
 
