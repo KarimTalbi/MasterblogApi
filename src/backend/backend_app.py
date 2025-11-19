@@ -54,9 +54,16 @@ def handle_post(post_id):
 @app.route('/api/posts/search', methods=['GET'])
 def search_posts():
     posts = JsonHandler()
+
+    for arg in request.args:
+        if arg not in ['title', 'content', 'category', 'comment', 'tag']:
+            return {'error': f'Invalid search parameter: {arg}'}, 400
+
     search_result = posts.search(request.args)
+
     if search_result:
         return jsonify(search_result), 200
+
     return {'error': 'No posts found.'}, 404
 
 
