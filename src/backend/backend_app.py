@@ -27,7 +27,13 @@ def get_posts():
             return {'error': f'Missing fields: {[key for key, value in new_post.items() if not value]}'}, 400
         POSTS.append(new_post)
         return jsonify(new_post), 201
-    return jsonify(POSTS)
+
+    else:
+        sort = request.args.get('sort', 'id')
+        direction = request.args.get('direction', 'asc')
+
+        sorted_posts = sorted(POSTS, key=lambda post: post.get(sort), reverse=(direction == 'desc'))
+        return jsonify(sorted_posts), 200
 
 
 @app.route('/api/posts/<int:post_id>', methods=['DELETE', 'PUT'])
@@ -51,8 +57,8 @@ def handle_post(post_id):
 
 @app.route('/api/posts/search', methods=['GET'])
 def search_posts():
-    title = request.args.get('title')
-    content = request.args.get('content')
+    title = request.args.get('title','')
+    content = request.args.get('content', '')
     search_result = [
         post for post in POSTS if title.lower() in post['title'].lower() and content.lower() in post['content'].lower()
     ]
