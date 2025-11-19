@@ -8,14 +8,6 @@
         "tags": []
     },
     {
-        "id": 2,
-        "title": "Second post",
-        "content": "This is the second post.",
-        "comments": [],
-        "categories": [],
-        "tags": []
-    },
-    {
         "id": 3,
         "title": "100",
         "content": "100",
@@ -51,6 +43,14 @@
         "id": 5,
         "title": "400",
         "content": "400",
+        "comments": [],
+        "categories": [],
+        "tags": []
+    },
+    {
+        "id": 6,
+        "title": "string",
+        "content": "string",
         "comments": [],
         "categories": [],
         "tags": []
