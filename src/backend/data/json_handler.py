@@ -73,8 +73,10 @@ class Posts:
                 missing.append(key)
         return missing
 
-
     def add(self, post: dict[str, str | list[str] | int]):
+        if not post.get('author'): # This is just in here for now because the frontend doesn't support it yet.
+            post['author'] = 'unknown'
+
         missing = self.check_missing(post)
         if missing:
             return jsonify({'error': f'Missing fields: {missing}'}), 400
