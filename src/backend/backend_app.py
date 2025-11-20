@@ -85,6 +85,7 @@ def not_found(error: Exception) -> tuple[Response, int]:
     Returns:
         A JSON response with a 404 status code.
     """
+    print(error)
     return jsonify({'error': 'Not found'}), 404
 
 
@@ -99,6 +100,7 @@ def json_decode_error(error: json.JSONDecodeError) -> tuple[Response, int]:
     Returns:
         A JSON response with a 404 status code.
     """
+    print(error)
     return jsonify({'error': 'Invalid JSON format'}), 404
 
 
@@ -113,6 +115,7 @@ def internal_error(error: Exception) -> tuple[Response, int]:
     Returns:
         A JSON response with a 500 status code.
     """
+    print(error)
     return jsonify({'error': 'Internal server error'}), 500
 
 
