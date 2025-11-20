@@ -103,6 +103,14 @@ class Posts:
 
     def update(self, post_id, data):
         if self._map.get(post_id) is not None:
+            missing = self.check_missing(data)
+            if len(missing) == 3:
+                return jsonify({'error': f'No supported fields. Supported: {missing}'}), 400
+
+            unsupported = self.check_unsupported(data)
+            if unsupported:
+                return jsonify({'error': f'Unsupported fields: {unsupported}'}), 400
+
             self._data[self._map.get(post_id)].update(data)
             self._set()
             return jsonify(self._data[self._map.get(post_id)]), 200
