@@ -31,7 +31,7 @@ def get_posts() -> tuple[Response, int]:
         data = request.get_json()
         return posts.add(data)
 
-    return jsonify(posts.posts(request.args)), 200
+    return posts.posts(request.args)
 
 
 @app.route('/api/posts/<int:post_id>', methods=['GET', 'DELETE', 'PUT'])

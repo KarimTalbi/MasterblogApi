@@ -21,18 +21,18 @@ This project is a simple and robust RESTful API for a blog platform, developed a
 ### Prerequisites
 
 -   Python 3.8+
--   `uv` for package and environment management. You can install it by following the [official instructions](https://docs.astral.sh/uv/getting-started/installation/).
+-   `uv` for package and environment management. You can install it by following the [official instructions](https://astral.sh/docs/uv#installation).
 
 ### Setup and Installation
 
 1.  **Clone the repository:**
     
     ```bash
-    git clone https://github.com/KarimTalbi/MasterblogApi.git
-    cd MasterblogApi2
+    git clone https://github.com/KarimTalbi/MasterblogApi.git  
+    cd MasterblogApi
     ```
     
-2.  **Create a virtual environment and install dependencies:** `uv` can create a virtual environment and install dependencies from `pyproject.toml` and `uv.lock` in one step.
+2.  **Create a virtual environment and install dependencies:** The `pyproject.toml` file contains the list of required dependencies. Use `uv sync` to create the virtual environment and install them in one step.
     
     ```bash
     uv sync
@@ -51,17 +51,17 @@ This project is a simple and robust RESTful API for a blog platform, developed a
 
 ### Running the Application
 
-To start the Flask development server, run the following command from the `src/backend` directory:
+To start the Flask development server, run the `backend_app.py` script from the backend directory:
 
 ```bash
-python backend_app.py
+python backend/backend_app.py
 ```
 
 The API will be available at `http://localhost:5002`.
 
 ## API Endpoints
 
-The API provides the following endpoints for managing blog posts. For interactive documentation, run the application and navigate to `/api/docs` in your browser.
+The API provides the following endpoints for managing blog posts. For interactive documentation, run the application and navigate to `http://localhost:5002/api/docs` in your browser.
 
 ### Posts Collection
 
@@ -117,13 +117,18 @@ The API provides the following endpoints for managing blog posts. For interactiv
 ## Project Structure
 
 ```
-src/backend/
-├── data/
-│   ├── json_handler.py   # Handles all logic for interacting with the JSON data file.
-│   └── posts.json        # The database file for storing posts.
-├── static/
-│   └── masterblog.json   # OpenAPI specification file.
-└── backend_app.py        # Main Flask application file, defines routes and error handlers.
+.
+├── pyproject.toml        # Project metadata and dependencies for uv.
+├── run_backend.py        # Script to run the backend server from the root.
+├── src
+│   └── backend
+│       ├── data
+│       │   ├── json_handler.py   # Handles all logic for interacting with the JSON data file.
+│       │   └── posts.json        # The database file for storing posts.
+│       ├── static
+│       │   └── masterblog.json   # OpenAPI specification file.
+│       └── backend_app.py        # Main Flask application file.
+└── uv.lock               # Lockfile for reproducible dependency installation.
 ```
 
 ---
