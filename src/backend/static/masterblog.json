@@ -4,17 +4,41 @@
     "title": "Masterblog API",
     "version": "1.0.0"
   },
-  "servers": [{ "url": "http://localhost:5001" }],
+  "servers": [{ "url": "http://localhost:5002" }],
   "tags": [{ "name": "Post", "description": "Post API - CRUD" }],
   "paths": {
-        "/api/posts": {
-            "get": {
+    "/api/posts": {
+      "get": {
         "summary": "Returns all posts",
+        "description": "Returns a list of all posts, with optional sorting.",
         "produces": ["application/json"],
         "tags": ["Post"],
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort posts by a specific field (e.g., 'date', 'title').",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "description": "Sort direction ('asc' or 'desc').",
+            "required": false,
+            "type": "string",
+            "enum": ["asc", "desc"]
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Successful operation"
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PostResponse"
+              }
+            }
           }
         }
       },
@@ -29,100 +53,206 @@
             "description": "Post object that needs to be added",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Post"
+              "$ref": "#/definitions/PostInput"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Post created"
+            "description": "Post created",
+            "schema": {
+              "$ref": "#/definitions/PostResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input, object invalid"
           }
         }
       }
-        },
-        "/api/posts/{id}": {
-            "get": {
-                "summary": "Returns a single post",
-                "produces": ["application/json"],
-                "tags": ["Post"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of post to return",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    }
-                }
-            },
-            "put": {
-                "summary": "Updates a single post",
-                "produces": ["application/json"],
-                "tags": ["Post"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of post to update",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Post object that needs to be updated",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Post"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Post updated"
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Deletes a single post",
-                "produces": ["application/json"],
-                "tags": ["Post"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of post to delete",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Post deleted"
-                    }
-                }
-            }
-        }
     },
-    "definitions": {
-        "Post": {
-            "type": "object",
-            "properties": {
-                "title": {
-                    "type": "string"
-                },
-                "content": {
-                    "type": "string"
-                },
-                "author": {
-                    "type": "string"
-                }
+    "/api/posts/search": {
+      "get": {
+        "summary": "Searches for posts",
+        "description": "Searches for posts matching the query parameters.",
+        "produces": ["application/json"],
+        "tags": ["Post"],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Filter by post title",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "content",
+            "in": "query",
+            "description": "Filter by post content",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "description": "Filter by post author",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Filter by post date (YYYY-MM-DD)",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PostResponse"
+              }
             }
+          },
+          "404": {
+            "description": "No posts found"
+          }
         }
+      }
+    },
+    "/api/posts/{id}": {
+      "get": {
+        "summary": "Returns a single post",
+        "produces": ["application/json"],
+        "tags": ["Post"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of post to return",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PostResponse"
+            }
+          },
+          "404": {
+            "description": "Post not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Updates a single post",
+        "produces": ["application/json"],
+        "tags": ["Post"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of post to update",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Post object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post updated",
+            "schema": {
+              "$ref": "#/definitions/PostResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input, object invalid"
+          },
+          "404": {
+            "description": "Post not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a single post",
+        "produces": ["application/json"],
+        "tags": ["Post"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of post to delete",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post deleted"
+          },
+          "404": {
+            "description": "Post not found"
+          }
+        }
+      }
     }
+  },
+  "definitions": {
+    "PostInput": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "My First Post"
+        },
+        "content": {
+          "type": "string",
+          "example": "This is the content of my first post."
+        },
+        "author": {
+          "type": "string",
+          "example": "John Doe"
+        }
+      },
+      "required": ["title", "content"]
+    },
+    "PostResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "example": "2024-01-01"
+        },
+        "title": {
+          "type": "string",
+          "example": "My First Post"
+        },
+        "content": {
+          "type": "string",
+          "example": "This is the content of my first post."
+        },
+        "author": {
+          "type": "string",
+          "example": "John Doe"
+        }
+      }
+    }
+  }
 }

@@ -1,15 +1,30 @@
+"""
+This module implements a simple Flask API for a blog.
+
+It provides CRUD (Create, Read, Update, Delete) functionality for blog posts,
+as well as a search endpoint. The API is documented using Swagger UI.
+"""
 import json
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from data.json_handler import Posts
 from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
-CORS(app)  # This will enable CORS for all routes
+CORS(app)
 
 
 @app.route('/api/posts', methods=['GET', 'POST'])
-def get_posts():
+def get_posts() -> tuple[Response, int]:
+    """
+    Handles GET and POST requests for the /api/posts endpoint.
+
+    GET: Returns a list of all posts, with optional sorting.
+    POST: Creates a new post.
+
+    Returns:
+        A Flask response object.
+    """
     posts = Posts()
 
     if request.method == 'POST':
@@ -20,7 +35,16 @@ def get_posts():
 
 
 @app.route('/api/posts/<int:post_id>', methods=['GET', 'DELETE', 'PUT'])
-def handle_post(post_id):
+def handle_post(post_id: int) -> tuple[Response, int]:
+    """
+    Handles GET, DELETE, and PUT requests for a single post.
+
+    Args:
+        post_id: The ID of the post to handle.
+
+    Returns:
+        A Flask response object.
+    """
     posts = Posts()
 
     if request.method == 'GET':
@@ -37,23 +61,58 @@ def handle_post(post_id):
 
 
 @app.route('/api/posts/search', methods=['GET'])
-def search_posts():
+def search_posts() -> tuple[Response, int]:
+    """
+    Handles GET requests for the /api/posts/search endpoint.
+
+    Searches for posts based on query parameters.
+
+    Returns:
+        A Flask response object.
+    """
     posts = Posts()
     return posts.search(request.args)
 
 
 @app.errorhandler(404)
-def not_found(error):
+def not_found(error: Exception) -> tuple[Response, int]:
+    """
+    Handles 404 Not Found errors.
+
+    Args:
+        error: The error object.
+
+    Returns:
+        A JSON response with a 404 status code.
+    """
     return jsonify({'error': 'Not found'}), 404
 
 
 @app.errorhandler(json.JSONDecodeError)
-def json_decode_error(error):
+def json_decode_error(error: json.JSONDecodeError) -> tuple[Response, int]:
+    """
+    Handles JSON decoding errors.
+
+    Args:
+        error: The error object.
+
+    Returns:
+        A JSON response with a 404 status code.
+    """
     return jsonify({'error': 'Invalid JSON format'}), 404
 
 
 @app.errorhandler(500)
-def internal_error(error):
+def internal_error(error: Exception) -> tuple[Response, int]:
+    """
+    Handles 500 Internal Server errors.
+
+    Args:
+        error: The error object.
+
+    Returns:
+        A JSON response with a 500 status code.
+    """
     return jsonify({'error': 'Internal server error'}), 500
 
 
