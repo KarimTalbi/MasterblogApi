@@ -1,58 +1,37 @@
 [
     {
-        "id": 1,
-        "title": "First post",
-        "content": "This is the first post.",
-        "comments": [],
-        "categories": [],
-        "tags": []
-    },
-    {
-        "id": 3,
-        "title": "100",
-        "content": "100",
-        "comments": [],
-        "categories": [],
-        "tags": []
+        "id": 2,
+        "date": "2025-11-11",
+        "title": "z",
+        "content": "b",
+        "author": "b"
     },
     {
         "id": 4,
-        "title": "200",
-        "content": "300",
-        "comments": [
-            "this is a category",
-            "this is a category",
-            "this is a category",
-            "this is a category",
-            "this is a category"
-        ],
-        "categories": [
-            "this is a category",
-            "this is a category",
-            "this is a category"
-        ],
-        "tags": [
-            "this is a category",
-            "this is a category",
-            "this is a category",
-            "this is a category",
-            "this is a category"
-        ]
-    },
-    {
-        "id": 5,
-        "title": "400",
-        "content": "400",
-        "comments": [],
-        "categories": [],
-        "tags": []
+        "date": "2025-10-20",
+        "title": "d",
+        "content": "d",
+        "author": "d"
     },
     {
         "id": 6,
-        "title": "string",
-        "content": "string",
-        "comments": [],
-        "categories": [],
-        "tags": []
+        "date": "2020-11-20",
+        "title": "f",
+        "content": "f",
+        "author": "f"
+    },
+    {
+        "id": 9,
+        "date": "2025-11-01",
+        "title": "i",
+        "content": "i",
+        "author": "i"
+    },
+    {
+        "id": 10,
+        "date": "2025-11-30",
+        "title": "j",
+        "content": "j",
+        "author": "j"
     }
 ]
