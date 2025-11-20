@@ -48,7 +48,6 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "blinker" },
     { name = "click" },
-    { name = "itsdangerous" },
     { name = "jinja2" },
     { name = "markupsafe" },
     { name = "werkzeug" },
