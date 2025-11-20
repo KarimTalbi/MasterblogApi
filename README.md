@@ -21,7 +21,7 @@ This project is a simple and robust RESTful API for a blog platform, developed a
 ### Prerequisites
 
 -   Python 3.8+
--   `uv` for package and environment management. You can install it by following the [official instructions](https://astral.sh/docs/uv#installation).
+-   `uv` for package and environment management. You can install it by following the [official instructions](https://docs.astral.sh/uv/getting-started/installation/).
 
 ### Setup and Installation
 
